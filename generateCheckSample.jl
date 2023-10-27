@@ -1,5 +1,5 @@
 ###############################################################################
-# Part of the Quantum in newspapers project
+# Part of the Quantum Science & Technology in Dutch Newspapers (QSTDN) project
 # By Thomas Rothe
 ################################################################################
 # Creates a random sample from a directory of .pdf files, given a fixed percentage
@@ -8,27 +8,11 @@
 
 using StatsBase
 
-#indir = "/mnt/s/Sync/University/20212022_EPQS/data_files/national_newspapers_09-21/complete_data/"
-#outdir = "/mnt/s/Sync/University/20212022_EPQS/data_files/national_newspapers_09-21/complete_data/selection_check_sample/"
-#indir = "/mnt/s/Sync/University/20212022_EPQS/data_files/national_newspapers_09-21/complete_data/2022_singledout/"
-#outdir = "/mnt/s/Sync/University/20212022_EPQS/data_files/national_newspapers_09-21/complete_data/2022_singledout/selection_check_sample/"
-#indir = "/mnt/s/Sync/University/20212022_EPQS/data_files/national_newspapers_09-21/complete_data/extra_check_sample/"
-#outdir = "/mnt/s/Sync/University/20212022_EPQS/data_files/national_newspapers_09-21/complete_data/extra_check_sample/temp/"
-
-#indir = "/mnt/s/OneDrive - Universiteit Leiden/QSTDN_Quantum&Society/data/national_newspapers_09-21/post_selection_data/"
-#outdir = "/mnt/s/OneDrive - Universiteit Leiden/QSTDN_Quantum&Society/data/national_newspapers_09-21/coding_sample_medium/"
-#indir = "/mnt/s/OneDrive - Universiteit Leiden/QSTDN_Quantum&Society/data/national_newspapers_09-21/coding_sample_medium/"
-#outdir = "/mnt/s/OneDrive - Universiteit Leiden/QSTDN_Quantum&Society/data/national_newspapers_09-21/coding_sample_small/"
-#indir = "/mnt/s/OneDrive - Universiteit Leiden/QSTDN_Quantum&Society/data/national_newspapers_09-21/coding_sample_small/"
-#outdir = "/mnt/s/OneDrive - Universiteit Leiden/QSTDN_Quantum&Society/data/national_newspapers_09-21/coding_sample_small/small_check_sample/"
-residualdir = "/mnt/s/OneDrive - Universiteit Leiden/QSTDN_Quantum&Society/data/national_newspapers_09-21/coding_sample_small/"
-indir = "/mnt/s/OneDrive - Universiteit Leiden/QSTDN_Quantum&Society/data/national_newspapers_09-21/coding_sample_medium/"
-outdir = "/mnt/s/OneDrive - Universiteit Leiden/QSTDN_Quantum&Society/data/national_newspapers_09-21/coding_sample_medium/medium_check_sample/"
-
+indir = "$DATA_PATH/national_newspapers_09-21/complete_data/"
+outdir = "$DATA_PATH/national_newspapers_09-21/complete_data/selection_check_sample/"
 
 outfilename = "_check_sample_ids.txt"
-#sample_percentage = 20 #%
-sample_size = 24
+sample_percentage = 20 #%
 
 #Where to sample from?
 sample_space = filter(contains(".pdf"), readdir(indir))
@@ -45,7 +29,7 @@ filter!(el -> !(el in neg_sample_space) ,sample_space)
 #######################################################################################
 
 @show size(sample_space), size(neg_sample_space)
-#sample_size = Int(round((sample_percentage/100) * length(sample_space)) + 1)  #Uncomment when using Percentage-based sampling
+sample_size = Int(round((sample_percentage/100) * length(sample_space)) + 1) 
 
 #Happy sampling!
 check_sample = sample(sample_space, sample_size, replace=false)

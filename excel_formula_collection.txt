@@ -1,9 +1,0 @@
-=IF(AND(ISTEXT(L8) ; ISTEXT(BR8)); '~'; IF(L8 = BR8; 1; IF(OR(AND(L8 = -2; BR8 = 0); AND(L8 = 0; BR8 = -2)); 1; 0)))
-
-
-=COUNTIF(Pilot_IC_Parallel!DX7:DX43; 0) + COUNTIF(Pilot_IC_Parallel!DX7:DX43; 1)
-=COUNTIF(Pilot_IC_Parallel!DY7:DY43; 0) + COUNTIF(Pilot_IC_Parallel!DY7:DY43; 1)
-=COUNTIF(Pilot_IC_Parallel!DZ7:DZ43; 0) + COUNTIF(Pilot_IC_Parallel!DZ7:DZ43; 1)
-=COUNTIF(Pilot_IC_Parallel!EA7:EA43; 0) + COUNTIF(Pilot_IC_Parallel!EA7:EA43; 1)
-
-=IF(ISTEXT(Final_Coding_Post_Discussion!M8); 100* COUNTIF(Final_Coding_Post_Discussion!M8:M392; "x") / COUNTIF(Final_Coding_Post_Discussion!M8:M392; "<>~") ;"~")
