@@ -2,7 +2,7 @@
 
 Code used in the "Quantum Science & Technology in Dutch Newspapers" project, see our paper: [LINK TO PUBLISHED PAPER]
 
-This repo primarily provides scripts to extract & process information from news articles in the Lexis Nexis Uni® database:
+This repo primarily provides scripts to extract & process information from news articles in the Lexis Nexis® Uni database:
 - NexisUni_checkDuplicates.jl:
 - NexisUni_txt2dataset.jl: 
 - NexisUni_extractMetadata.jl:
