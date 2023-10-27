@@ -1,3 +1,10 @@
+############################### 
+Part of the Quantum Science & Technology in Dutch Newspapers (QSTDN) project
+
+#####################
+
+Note: This script is constructed to catch many of the layouting inconsisenties resulting from converting NexisUni .pdf files to .txt. Nevertheless, some layouting errors will let the script crash, particularly when linebreaks are misssing linebreaks. The script logs, however, always show the last considered article ID such that the .txt files can be corrected by hand. If the metadata can't be determined with certainty, the script will crash such that the correctness of extracted metadata is ensured. 
+
 using FileIO
 using CSV
 using DataFrames
