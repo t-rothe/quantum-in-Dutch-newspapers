@@ -1,6 +1,6 @@
 # Quantum Science & Technology in Dutch Newspapers (QSTDN)
 
-Code used in the "Quantum Science & Technology in Dutch Newspapers" project, see our paper: [LINK TO PUBLISHED PAPER]
+Code used in the "Quantum Science & Technology in Dutch Newspapers" project; See our paper: [LINK TO PUBLISHED PAPER]
 
 This repo primarily provides scripts to extract & process information from news articles in the LexisNexis® Uni database:
 - _NexisUni_titleFiles2urnFiles.jl_: Automatically renames NexisUni files (i.e. "HEADLINE.pdf") to systematic & indexed filename (i.e. "ArticleID_#_URN.pdf")
