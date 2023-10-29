@@ -1,9 +1,13 @@
 ###############################################################################
-# Part of the Quantum in newspapers project
-# By Thomas Rothe
+# Part of the Quantum Science & Technology in Dutch Newspapers (QSTDN) project
+###############################################################################
+# By Thomas Rothe 
+# Copyright (c) 2022 Leiden University
 ################################################################################
+# NOTE: This script is only a dependency for other scripts, i.e. defines relevant routines that would mess up other scripts. Stand-alone execution is not intended.
+#
 # Takes NexisUni data files with filename in format "[Article ID]_#_[URN].txt"
-# and tries to extract common metadata from the file.
+# and tries to extracts common metadata from the file.
 # Conversion of the .pdf, .docx or .rtf data files from NexisUni to .txt is required before use!
 # e.g. See the accompanying MS Powershell script "pdf2txt_batch.ps1"
 #
@@ -19,6 +23,8 @@ using CSV
 using XLSX
 using DataFrames
 using StringEncodings
+
+# Define some constant dictionaries for parsing the metadata from the files into our custom data structure
 
 newspaperNameKeywordList =  ["NRC Handelsblad","NRC.NEXT", "NRC","de Volkskrant", "Trouw", "AD/Algemeen Dagblad", "De Telegraaf", "Het Parool"]
 
@@ -55,6 +61,13 @@ rm_whitespace(input) = filter(x -> !isspace(x), input)
 
 
 function parse_third_meta_line(metadata_dict, third_meta_line)
+    """Parses the third metaline of the NexisUni .txt data file and extracts the following features:
+    - Publication Weekday
+    - Publication Day
+    - Publication Month
+    - Publication Year
+    """
+
     weekday_idx = [] #First and last indices of the respective features in the line-string
     day_idx = []
     month_idx = []
@@ -99,6 +112,12 @@ function parse_third_meta_line(metadata_dict, third_meta_line)
 end
 
 function parse_last_meta_lines(metadata_dict, meta_line)
+    """Parses the last metalines of the NexisUni .txt data file and extracts the following features:
+    - Newspaper Section
+    - Author Name
+    - Word Count
+    """
+
     newspaper_section_idx = []
     author_name_idx = []
     article_length = []
@@ -139,6 +158,22 @@ function parse_last_meta_lines(metadata_dict, meta_line)
 end
 
 function extract_metadata(file, filepath,encoding)
+    """Extracts the metadata from the NexisUni .txt data file and returns a dictionary with the following features:
+    - Article ID
+    - Filename
+    - Headline
+    - Newspaper Name
+    - Publication Weekday
+    - Publication Day
+    - Publication Month
+    - Publication Year
+    - Word Count
+    - Author Name
+    - Newspaper Section
+    - Body
+    - URN
+    """
+
     metadata_dict = Dict()
 
     #Look whether Filename is in format ID_#_URN or ID_PS#_URN
@@ -258,10 +293,15 @@ function extract_metadata(file, filepath,encoding)
     line_cnt += 1 #Jump to newline behind Graphics / Classification keyword
     #Extract from here other Graphic or Classification things if needed
 
-    #Correct for missing values if needed
+    #Correct here for missing values if needed
 
     return metadata_dict
 end
+
+
+# --------------------------
+## From here on we primarily define custom data structures and methods to convert/export the data.
+# --------------------------
 
 mutable struct Article
     article_id::Int
@@ -345,6 +385,9 @@ function load_articleset_from_csv(filepath)
 end
 
 function extract_from_file(filepath)
+    """Interface method to extract metadata from a single NexisUni .txt data file
+    """
+
     @assert occursin(lowercase(".txt"), lowercase(filepath))
     @assert isfile(filepath)
 
@@ -397,14 +440,8 @@ end
 
 
 function main()
-    #datafiles_dir = "/mnt/s/Sync/University/20212022_EPQS/data_files/national_newspapers_09-21/complete_data/txt/"
-    #datafiles_dir = "/mnt/s/Sync/University/20212022_EPQS/data_files/national_newspapers_09-21/complete_data/2022_singledout/txt/"
-    #datafiles_dir = "/mnt/c/Users/trothe/Downloads/test_box/txt/"
-    #datafiles_dir = "/mnt/s/OneDrive - Universiteit Leiden/QSTDN_Quantum&Society/data/national_newspapers_09-21/pilot_coding_data/_2022_postselected/txt/"
-    datafiles_dir = "/mnt/s/OneDrive - Universiteit Leiden/QSTDN_Quantum&Society/data/national_newspapers_09-21/post_selection_data/txt/"
+    datafiles_dir = "$DATAPATH/national_newspapers_09-21/post_selection_data/txt/"
     
-    #extract_from_file("/mnt/c/Users/trothe/Desktop/1208_#_510F-5X61-JC8W-Y291.txt")
-    #extract_from_file("/mnt/c/Users/trothe/Downloads/test_box/txt/3_#_64DN-XT21-JC8X-623B.txt")
     articleset = extract_from_fileset(datafiles_dir)
     save_articleset_to_excel(articleset, datafiles_dir*"PSSet.xlsx")
 end

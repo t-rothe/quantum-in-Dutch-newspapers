@@ -1,14 +1,22 @@
 ###############################################################################
-# Part of the Quantum in newspapers project
-# By Thomas Rothe
+# Part of the Quantum Science & Technology in Dutch Newspapers (QSTDN) project
+###############################################################################
+# By Thomas Rothe 
+# Copyright (c) 2022 Leiden University
 ################################################################################
 # Takes NexisUni data files with filename in format "[Article ID]_#_[URN].txt"
 # and tries to find duplicates in the provided filetree.
+# Both the terminal output and the created .txt file give a list of all duplicate pairs of articles with the associated Similarity score/distance.
+# 
+# CAUTION: Any duplicates found are only candidates and need to be checked manually! 
+# The purpose of this script is only to reduce the manual search space for duplicates from Ω(n^2) to Ω(n).
+# Testing through multiple metrics and significance levels is an important calibaration step.
+# For this project, we chose the significance level always rather conservatively to avoid false-negatives at the cost of false-positives.
 #
 # Depending on the use case, you may want to change the (default) significance level
 #
 # Requires the accompanying "NexisUni_extractMetaData.jl"-script in the same folder 
-# Please note the documentation of the "NexisUni_extractMetaData.jl"-script
+# Please take note of the documentation in the "NexisUni_extractMetaData.jl"-script
 #
 
 using FileIO
@@ -20,15 +28,19 @@ using StringDistances
 include("NexisUni_extractMetaData.jl")
 
 function get_duplicates_for_articleset(articleset::ArticleSet, sig_lvl)
+    """Returns a list of duplicate candidates for the given articleset. 
+    This function was finally NOT used since duplicate canddiates with different publication years can never be actual duplicates.
+    Rather use the function get_duplicates_for_articleset_per_year() below to get only duplicates of articles published in the same year.
+    """
     duplicates = []
     sim_scores = []
 
     @assert (sig_lvl > 0.0 && sig_lvl < 1.0)
 
+    # We vary the distance metric here manually to ensure conservative results (s.t. we get rather a longer list of condidates for manual check than missing some duplicates after all)
     distance_metric = Overlap(3) #Should better be symeetric!
     #distance_metric = DamerauLevenshtein()
     #distance_metric = RatcliffObershelp
-    #distance_metric = Overlap(8)
 
     n_articles = length(articleset.asArray)
     @assert n_articles > 2
@@ -65,15 +77,17 @@ end
 
 
 function get_duplicates_for_articleset_per_year(articleset::ArticleSet, sig_lvl)
+    """Returns a list of duplicate candidates for the given articleset, but only those between articles that were published in the same year.
+    """
     duplicates = []
     sim_scores = []
 
     @assert (sig_lvl > 0.0 && sig_lvl < 1.0)
 
-    #distance_metric = Overlap(3)
+    # We vary the distance metric here manually to ensure conservative results (s.t. we get rather a longer list of condidates for manual check than missing some duplicates after all)
+    distance_metric = Overlap(3)
     #distance_metric = DamerauLevenshtein()
     #distance_metric_2 = RatcliffObershelp()
-    distance_metric = Overlap(6)
      
     for year in 2009:2021
         println("Checking duplicates for $year ...")
@@ -115,12 +129,9 @@ end
 
 
 function main()
-    #datafiles_dir = "/mnt/s/Sync/University/20212022_EPQS/data_files/national_newspapers_09-21/complete_data/txt/"
-    #datafiles_dir = "/mnt/s/Sync/University/20212022_EPQS/data_files/national_newspapers_09-21/complete_data/2022_singledout/txt/"
-    #datafiles_dir = "/mnt/c/Users/trothe/Downloads/test_box/txt/"
-    datafiles_dir = "/mnt/s/Sync/University/20212022_EPQS/data_files/national_newspapers_09-21/post_selection_data/txt/"
+    datafiles_dir = "$DATAPATH/national_newspapers_09-21/post_selection_data/txt/"
     
-    significance_level = 0.4
+    significance_level = 0.4 #Change this to make the duplication check more or less sensitive
 
     articleset = extract_from_fileset(datafiles_dir)
 
@@ -131,7 +142,7 @@ function main()
     #@show sim_scores
 
     
-    open(datafiles_dir*"duplicates_postcorr_Overlap8_p3.txt", "w") do f
+    open(datafiles_dir*"duplicate_candidates_Overlap8_p3.txt", "w") do f
         for (idx, duplicate) in enumerate(duplicates)
           println(f, ("[Article A]: ", duplicate[1].article_id,
                                       duplicate[1].urn, 
@@ -140,7 +151,7 @@ function main()
                                       duplicate[1].pub_year,
                                       duplicate[1].newspaper_name,
                                       duplicate[1].word_count,
-                                      "[Article B]: ",
+                        "[Article B]: ",
                                       duplicate[2].article_id, 
                                       duplicate[2].urn, 
                                       duplicate[2].pub_day,

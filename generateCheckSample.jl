@@ -1,6 +1,8 @@
 ###############################################################################
 # Part of the Quantum Science & Technology in Dutch Newspapers (QSTDN) project
-# By Thomas Rothe
+###############################################################################
+# By Thomas Rothe 
+# Copyright (c) 2022 Leiden University
 ################################################################################
 # Creates a random sample from a directory of .pdf files, given a fixed percentage
 #
@@ -20,13 +22,6 @@ sample_space = filter(contains(".pdf"), readdir(indir))
 neg_sample_space = filter(contains(".pdf"), readdir(residualdir))
 #Delete to be excluded samples from the sample space
 filter!(el -> !(el in neg_sample_space) ,sample_space)
-
-######### Uncomment & use this section only when extending a smaller sample to bigger one ########
-# We don't want to give files in the smaller sample an unfair second chance to be sampled so only sample from the residual of the big and small sample
-#outdir = "/mnt/s/OneDrive - Universiteit Leiden/QSTDN_Quantum&Society/data/national_newspapers_09-21/coding_sample_small/"
-#smaller_sample = filter(contains(".pdf"), readdir(smaller_sample_dir))
-#filter!(el -> !(el in smaller_sample) ,sample_space)
-#######################################################################################
 
 @show size(sample_space), size(neg_sample_space)
 sample_size = Int(round((sample_percentage/100) * length(sample_space)) + 1) 

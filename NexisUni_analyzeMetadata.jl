@@ -1,3 +1,16 @@
+###############################################################################
+# Part of the Quantum Science & Technology in Dutch Newspapers (QSTDN) project
+###############################################################################
+# By Thomas Rothe 
+# Copyright (c) 2022 Leiden University
+################################################################################
+# Plotting / Visualization methods for metadata extracted from NexisUni article-set
+# e.g. number of articles per year, per month, per weekday, per newspaper brand, etc.
+#
+# Requires the accompanying "NexisUni_extractMetaData.jl"-script in the same folder 
+# Please take note of the documentation in the "NexisUni_extractMetaData.jl"-script
+#
+
 
 using FileIO
 using CSV
@@ -19,6 +32,10 @@ function convert_regex(x::String)
 end
 
 function plot_articlesperyear_for_articleset(articleset::ArticleSet)
+    """
+    Plot the number of articles per year for a given ArticleSet.
+    """
+
     n_articles_per_year = []
 
     n_articles = length(articleset.asArray)
@@ -45,6 +62,10 @@ function plot_articlesperyear_for_articleset(articleset::ArticleSet)
 end
 
 function plot_articlespermonthandyear_for_articleset(articleset::ArticleSet)
+    """
+    Plot the number of articles per month for a given ArticleSet.
+    """
+
     n_articles_per_monthandyear = []
 
     n_articles = length(articleset.asArray)
@@ -80,6 +101,10 @@ end
 
 
 function plot_articlespernewspaperbrandperyear_for_articleset(articleset::ArticleSet)
+    """
+    Plot the number of articles per newspaper brand per year for a given ArticleSet.
+    """
+    
     n_articles_per_year = Dict()
 
     n_articles = length(articleset.asArray)
@@ -140,6 +165,10 @@ function plot_articlespernewspaperbrandperyear_for_articleset(articleset::Articl
 end
 
 function plot_articlesperweekday_for_articleset(articleset::ArticleSet)
+    """
+    Plot the number of articles per weekday for a given ArticleSet.
+    """
+
     n_articles_per_weekday = []
 
     n_articles = length(articleset.asArray)
@@ -169,6 +198,10 @@ function plot_articlesperweekday_for_articleset(articleset::ArticleSet)
 end
 
 function plot_averagewordcountpermonth_for_articleset(articleset::ArticleSet)
+    """
+    Plot the average word count per month for a given ArticleSet.
+    """
+
     av_wordcount_per_monthandyear = []
 
     n_articles = length(articleset.asArray)
@@ -219,6 +252,10 @@ function plot_averagewordcountpermonth_for_articleset(articleset::ArticleSet)
 end
 
 function plot_averagewordcountperyear_for_articleset(articleset::ArticleSet)
+    """
+    Plot the average word count per year for a given ArticleSet.
+    """
+
     av_wordcount_per_year = []
 
     n_articles = length(articleset.asArray)
@@ -259,6 +296,10 @@ function plot_averagewordcountperyear_for_articleset(articleset::ArticleSet)
 end
 
 function pullAnchor(inputString, anchor, keyword)
+    """
+    Pull anchorwords from inputString and check if they are within the specified neighborhood of the keyword.
+    """
+
     # Return true/false on whether any of the anchor-words (dict-keys) are within their specified neighborhouds (dict-vals in # of words)
     
     anchorApplied= false 
@@ -284,6 +325,9 @@ function pullAnchor(inputString, anchor, keyword)
 end    
 
 function count_wordoccurancies_for_articleset(articleset::ArticleSet, keywordlist, mode, anchor=Dict())
+    """
+    Count the occurance of the given keywords in the given articleset.
+    """
 
     if mode == :count
 		n_articles_per_year = Dict()
@@ -385,14 +429,11 @@ end
 
 
 function main()
-    #datafiles_dir = "/mnt/s/Sync/University/20212022_EPQS/data_files/national_newspapers_09-21/complete_data/txt/"
-    #datafiles_dir = "/mnt/s/Sync/University/20212022_EPQS/data_files/national_newspapers_09-21/complete_data/2022_singledout/txt/"
-    #datafiles_dir = "/mnt/c/Users/trothe/Downloads/test_box/txt/"
-    #datafiles_dir = "/mnt/s/Sync/University/20212022_EPQS/data_files/national_newspapers_09-21/complete_data/2022_singledout/_2022_postselected/txt/"
-    datafiles_dir = "/mnt/s/OneDrive - Universiteit Leiden/QSTDN_Quantum&Society/data/national_newspapers_09-21/post_selection_data/txt/"
+    datafiles_dir = "$DATAPATH/national_newspapers_09-21/post_selection_data/txt/"
     
     articleset = extract_from_fileset(datafiles_dir)
 
+    # Uncomment the desired plot-function below:
     #plot_articlesperyear_for_articleset(articleset)
     #plot_articlespermonthandyear_for_articleset(articleset)
     #plot_articlespernewspaperbrandperyear_for_articleset(articleset)
@@ -400,6 +441,10 @@ function main()
     #plot_averagewordcountpermonth_for_articleset(articleset)
     #plot_averagewordcountperyear_for_articleset(articleset)
 
+    # ------    
+    # Keyword counting:
+    # ------
+    
     #keywordlist = ["kwantum", "quantum"]
     #keywordlist = ["spookachtig", "spooky", r"myst[a-z]{1,12}", "vreemd"]
     #keywordlist = ["superpositie", r"verstrengel[a-z]{1,10}", "verbonden", "afhankelijk"]
