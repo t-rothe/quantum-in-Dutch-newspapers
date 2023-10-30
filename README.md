@@ -22,9 +22,12 @@ Additional scripts used for the paper:
 
 The scripts starting with "NexisUni_" expect a dataset of NexisUni news articles. This is just a dedicated folder with individual .txt files, whereby each file represents the textual content of a single news article in the dataset. While the folder name can be abitrary, the filenames must be formated as: "ArticleID_#_URN.txt". Here "ArticleID" just refers to a unique number for easy reference, and "URN" is the Unique Resource Name (URN) provided by NexisUni (without the trailing zeros and the "URN"-prefix). <p>
 
-1. NexisUni does (currently) not allow the download of articles as .txt files so you'll have to download the articles as .pdf's. Put all .pdf files of your dataset into a separate folder and rename the files to the above format. You may automate this renaming using "NexisUni_titleFiles2urnFiles.jl". However, for this you need, apart from the .pdf files, also the bibliographic metadata from NexisUni as .RIS files. After selecting files in NexisUni you can click on the bookshelf icon and use "Citation Export" to obtain such a .RIS file easily. <br>
-Now, using the "NexisUni_titleFiles2urnFiles.jl" script, you can automatically rename all the .pdf files into the required format! <p>
-
+1. NexisUni does (currently) not allow the download of articles as .txt files so you'll have to download the articles as .pdf's. Put all .pdf files of your dataset into a separate folder and rename the files to the above format. <br>
+You may automate this renaming using "NexisUni_titleFiles2urnFiles.jl". However, for this you need, apart from the .pdf files, also the bibliographic metadata from NexisUni as a .csv file. This is easy to obtain: <br>
+- After selecting news articles in NexisUni you can click on the bookshelf icon and use "Citation Export" to obtain such a .RIS file of the bibliographic easily. 
+- You need to convert this .RIS file to .csv. There are plenty tools available to do this; E.g. see https://github.com/WeDias/RIS2CSV
+- Now, using the "NexisUni_titleFiles2urnFiles.jl" script, you can automatically rename all the .pdf files into the required format!
+<p>
 2. Unfortunately, .pdf files are not very accesible in programming environments. So you'll have to convert the .pdf files to .txt files. <br>
 On Windows 10/11 we can do this efficiently with MS Word via PowerShell. First make sure all .pdf files are in a separate folder and have the filename format from above. In "pdf2txt_batch.ps1" you can just specify the folder with .pdf files and run the script. On first run, you may be prompted with "Word will now convert your PDF to an editable....". If so, please check the checkbox "Don't show this message again" and hit OK. <br>
 
