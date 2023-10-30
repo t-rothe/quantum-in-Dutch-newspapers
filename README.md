@@ -18,7 +18,7 @@ Additional scripts used for the paper:
 
 ## Basic usage:
 
-### Preparing NexisUni data:
+### Preparing NexisUni data
 
 The scripts starting with "NexisUni_" expect a dataset of NexisUni news articles. This is just a dedicated folder with individual .txt files, whereby each file represents the textual content of a single news article in the dataset. While the folder name can be abitrary, the filenames must be formated as: "ArticleID_#_URN.txt". Here "ArticleID" just refers to a unique number for easy reference, and "URN" is the Unique Resource Name (URN) provided by NexisUni (without the trailing zeros and the "URN"-prefix). <p>
 
@@ -53,11 +53,11 @@ End of Document
 
 When the metadata extraction runs smoothly, the data(set) is finally in an accesible format and ready to be used with any of the other "NexisUni_" scripts! 
 
-### Visualizing metadata:
+### Visualizing metadata
 
 Plotting and visualizing metadata as a form of exploring the descriptives of your newspaper data is now easily done. We implemented a couple of straightforward example plots in the "NexisUni_analyzeMetadata.jl" script. (It also includes position-aware keyword counting throughout the dataset!)
 
-### Duplicate Check:
+### Duplicate Check
 The effort of converting the NexisUni data into a machine-readable format is not only justified by avoiding the manual extraction of metadata. It also enables us to find duplicate news articles throughout the dataset more efficiently.  <p>
 The "NexisUni_checkDuplicates.jl" script does this by using textual similarity metrics. In our workflow edit-distances are used complementary to overlap distances to detect multiple types of news article duplicates. To reduce runtime of the script significantly, especially when using edit-distances, we only looked for duplicates in article subsets with the same year of publication. We think this is a reasonable assumption since two equal articles would never be published by accident in different years. <br>
 For details on how we defined duplicates and applied these similarity metrics, we refer to the appendix of our paper.  <p>
@@ -66,9 +66,9 @@ The script outputs a list of all duplicate pairs of articles into the terminal a
 Please note that the only purpose of this script was to reduce the manual search space for duplicates from $Ω(n^2)$ to $Ω(n)$ by excluding the trivial non-duplicates. Any duplicates found by the script are only duplicate candidates and need to be checked manually! <p> 
 Testing through multiple metrics and significance levels is an important calibaration step as we need to make sure that we don't discard article pairs too early. Therefore, we chose the significance level always rather conservatively to avoid false-negatives. Of course, this comes at the cost of having to filter out more false-positives by hand. In any case, you may want to adapt the significance level and specific metric to your data.
 
-### Batched computation of Inter-Coder Reliability (ICR) for multiple coding features:
+### Batched computation of Inter-Coder Reliability (ICR) for multiple coding features
 We refer to the Jupyter notebook, "interrater_reliability.ipynb", for how to use R-packages from within Julia to simultaneously compute the Cohen's Kappa, Krippendorf's Alpha and Percent Agreement for an abitrary number of coding features (/codings) between two coders. <p>
-The codings from both coders (A & B) should be provided as a table on an MS Excel sheet. The table rows should correspond to different samples, while the columns should be combinations of coder label and the coding feature label separated by a full stop character ".". <br>
+The codings from both coders (A & B) should be provided as a table on an MS Excel sheet. The table rows should correspond to different samples, while the columns should be combinations of coder label and the coding feature label separated by a full stop character ".". <p>
 Let's assume our codebook contains 42 codings / coding features, labelled "1", "2", ..., "42". Then our table should look like:
 | Article ID | 1.A | ... | 42.A | 1.B | ... | 42.B |
 |:---------- |:--- |:--- |:---- |:--- |:--- |:---- |
