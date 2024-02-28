@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-preferred-citation: software-code
+type: software-code
 message: "If you prefer to cite the code specifically, instead of the article linked in the readme, you can do so as below."
 authors:
 - family-names: "Rothe"
