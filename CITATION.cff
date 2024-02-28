@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you prefer to cite the code specifically, instead of the article linked in the readme, you can do so as below."
+authors:
+- family-names: "Rothe"
+  given-names: "Thomas"
+  orcid: "https://orcid.org/0009-0008-2596-3643"
+title: "Quantum Science & Technology in Dutch Newspapers"
+version: 1.0.0
+url: "https://github.com/trothe/quantum-in-Dutch-newspapers"
